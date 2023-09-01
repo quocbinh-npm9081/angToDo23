@@ -1,7 +1,9 @@
 .icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 40px;
-  line-height: 45px;
-  //font-size: 40px;
+  font-size: 40px;
   color: gray;
   background-color: white;
   transition: 250ms all ease-in-out;
