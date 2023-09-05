@@ -4,8 +4,15 @@
   (mouseout)="isHovering = false"
 >
   <div class="todo">
-    <input type="checkbox" class="toggle text-center" />
-    <label for="">todo item</label>
+    <input
+      [id]="todo.id"
+      type="checkbox"
+      [checked]="todo.isCompleted"
+      class="toggle text-center"
+    />
+    <label [for]="todo.id" [ngClass]="todo.isCompleted ? 'isCompleted' : ''">{{
+      todo.content
+    }}</label>
   </div>
 
   <div class="d-flex align-items-center">

@@ -26,11 +26,10 @@ export class TodoService {
   constructor(private storeService: LocalStorageService) {}
 
   fetchFromLocalStorage() {
-    this.todos =
-      this.storeService.getValue<Todo[]>(TodoService.TodoStorageKey) || [];
+    this.todos = this.storeService.getObj(TodoService.TodoStorageKey) || [];
     // this.filteredTodos = [...this.todos]; //shallow copy
     // this.filteredTodos = [...this.todos.map((todo) => ({ ...todo }))]; //deepcopy
-    console.log('todo init: ', this.todos);
+    console.log('todo init: ', typeof this.todos);
 
     this.filteredTodos = structuredClone(this.todos);
     this.updateTodosData();
@@ -64,7 +63,6 @@ export class TodoService {
   addTodo(todo: string) {
     const date = new Date(Date.now()).getTime();
     const newTodo = new Todo(date, todo);
-    console.log('New todo: ', newTodo);
     this.todos.unshift(newTodo);
     this.updateToLocalStorage();
   }

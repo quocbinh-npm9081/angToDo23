@@ -12,6 +12,7 @@ export class AppComponent implements OnInit {
   constructor(private todoService: TodoService) {}
 
   ngOnInit(): void {
+    console.log('app init');
     this.todoService.fetchFromLocalStorage();
     this.hasTodo$ = this.todoService.length$.pipe(map((length) => length > 0)); //Neu length > 0 tra ve true
 

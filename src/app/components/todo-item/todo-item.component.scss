@@ -7,6 +7,7 @@
     position: relative;
     font-size: 18px;
     user-select: none;
+    display: flex;
     & .toggle {
       // position: absolute;
       top: 0;
@@ -20,14 +21,15 @@
       //   & .toggle {
       //     background-image: url();
       //   }
-      // & .toggle.checked + label{
-
-      // }
-      & label {
-        display: block;
-        word-break: break-all;
-        padding: 15px 15px 15px 60px;
-      }
+    }
+    & label {
+      display: block;
+      word-break: break-all;
+      padding: 5px 5px 5px 10px;
+    }
+    & label.isCompleted {
+      text-decoration: line-through;
+      color: gray;
     }
   }
   & .icon-wrapper {
