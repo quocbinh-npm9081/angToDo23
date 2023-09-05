@@ -1,6 +1,18 @@
+<!-- <input
+  type="text"
+  class="w-100 h-100"
+  placeholder="What needs to be done"
+  required
+  [ngModel]="todoContent"
+  (ngModelChange)="handleInputChange($event)"
+/> -->
+
+<!-- Đây là rút ngắn ng bắt sư kiện với [(ngModel)], (keyup.enter)="onSubmit()"  khi bấm phím enter thì chạy hàm onSubmit -->
 <input
   type="text"
   class="w-100 h-100"
   placeholder="What needs to be done"
   required
+  [(ngModel)]="todoContent"
+  (keyup.enter)="onSubmit()"
 />

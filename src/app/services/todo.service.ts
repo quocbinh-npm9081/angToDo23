@@ -9,8 +9,8 @@ import { LocalStorageService } from './local-storage.service';
 })
 export class TodoService {
   private static readonly TodoStorageKey = 'todos';
-  private todos?: Todo[];
-  private filteredTodos?: Todo[];
+  private todos: Todo[] = [];
+  private filteredTodos: Todo[] = [];
 
   private lengthSubject: BehaviorSubject<number> = new BehaviorSubject<number>(
     0
@@ -28,18 +28,21 @@ export class TodoService {
   fetchFromLocalStorage() {
     this.todos =
       this.storeService.getValue<Todo[]>(TodoService.TodoStorageKey) || [];
-    //  this.filteredTodos = [...this.todos]; //shallow copy
-    this.filteredTodos = [...this.todos.map((todo) => ({ ...todo }))]; //deepcopy
+    // this.filteredTodos = [...this.todos]; //shallow copy
+    // this.filteredTodos = [...this.todos.map((todo) => ({ ...todo }))]; //deepcopy
+    console.log('todo init: ', this.todos);
+
+    this.filteredTodos = structuredClone(this.todos);
     this.updateTodosData();
   }
   filterTodos(filter: Filter, isFiltering: boolean = true) {
     this.currentFilter = filter;
     switch (filter) {
       case Filter.Active:
-        this.filteredTodos = this.todos?.filter((todo) => !todo.isCompleted);
+        this.filteredTodos = this.todos.filter((todo) => !todo.isCompleted);
         break;
       case Filter.Completed:
-        this.filteredTodos = this.todos?.filter((todo) => todo.isCompleted);
+        this.filteredTodos = this.todos.filter((todo) => todo.isCompleted);
         break;
       case Filter.All:
         this.filteredTodos = [...this.todos.map((todo) => ({ ...todo }))];
@@ -57,5 +60,12 @@ export class TodoService {
   private updateTodosData() {
     this.displayTodoSubject.next(this.filteredTodos);
     this.lengthSubject.next(this.todos.length);
+  }
+  addTodo(todo: string) {
+    const date = new Date(Date.now()).getTime();
+    const newTodo = new Todo(date, todo);
+    console.log('New todo: ', newTodo);
+    this.todos.unshift(newTodo);
+    this.updateToLocalStorage();
   }
 }
