@@ -31,7 +31,12 @@ export class TodoService {
     // this.filteredTodos = [...this.todos.map((todo) => ({ ...todo }))]; //deepcopy
     console.log('todo init: ', typeof this.todos);
 
-    this.filteredTodos = structuredClone(this.todos);
+    // this.filteredTodos = structuredClone(this.todos);
+
+    // mình không nên deepcopy trong trường hợp có sử dụng animation vì animation chỉ sử dụng cho thành phần static nếu mình sử dụng deepcode
+    // thì mỗi lần thêm hay xóa  sửa todo sẽ được ...spread thành 1 todo reference khác dẫn đến animation tưởn thành phần mới và nó sẽ ko chạy animtion
+    this.filteredTodos = [...this.todos]; //shallow copy
+
     this.updateTodosData();
   }
   filterTodos(filter: Filter, isFiltering: boolean = true) {
@@ -44,7 +49,8 @@ export class TodoService {
         this.filteredTodos = this.todos.filter((todo) => todo.isCompleted);
         break;
       case Filter.All:
-        this.filteredTodos = [...this.todos.map((todo) => ({ ...todo }))];
+        //  this.filteredTodos = [...this.todos.map((todo) => ({ ...todo }))]; //deepcopy
+        this.filteredTodos = [...this.todos]; //shadowcopy
         break;
     }
     if (isFiltering) {
@@ -64,6 +70,32 @@ export class TodoService {
     const date = new Date(Date.now()).getTime();
     const newTodo = new Todo(date, todo);
     this.todos.unshift(newTodo);
+    this.updateToLocalStorage();
+  }
+  changeTodoStatus(id: number, isCompleted: boolean) {
+    const todo = this.todos.find((t: Todo) => t.id === id);
+    console.log('todo: ', todo);
+
+    if (todo) todo.isCompleted = isCompleted;
+    this.updateToLocalStorage();
+  }
+  changeTodoContent(t: Todo) {
+    const thisTodo = this.todos.find((todo) => todo.id === t.id);
+    if (thisTodo) thisTodo.content = t.content;
+    this.updateToLocalStorage();
+  }
+  deleteTodo(id: number) {
+    const indexToDo = this.todos.findIndex((todo) => todo.id === id);
+    this.todos.splice(indexToDo, 1);
+    this.updateToLocalStorage();
+  }
+  changeAllToDoStatus() {
+    this.todos = this.todos.map((todo: Todo) => {
+      return {
+        ...todo,
+        isCompleted: !this.todos.every((todo: Todo) => todo.isCompleted),
+      };
+    });
     this.updateToLocalStorage();
   }
 }

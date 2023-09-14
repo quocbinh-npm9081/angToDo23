@@ -9,7 +9,7 @@ export class Todo {
   //   }
   //Phia duoi la cach ben duoi
   constructor(
-    public id?: number,
+    public id: number,
     public content?: string,
     public isCompleted: boolean = false
   ) {}
